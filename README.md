@@ -63,32 +63,22 @@ Below is the first five rows of our dataframe.
 | LOLTMNT03_183538 |           0 |       5 |       13 |         0.0 |           0.0 |                -5646.0 |             13.0 |
 | LOLTMNT03_183544 |           0 |      17 |       22 |         0.0 |           1.0 |                3574.0  |             23.0 |
 
-To build a clear team-level dataset, we use a few simple cleaning steps.
-
-First, we keep only matches marked as “complete” in the datacompleteness column. This choice makes sure the match records are finished and checked.
-
-Next, we keep only the LCK and LPL leagues, because these are the leagues we study. Then we remove player-level rows and keep only rows where participantid is 100 or 200. Each of these rows shows one team’s stats for one match.
-
-Because each match has one row for the blue side and one row for the red side, we keep only game IDs that appear exactly twice. This step removes matches that do not record both teams.
-
-Then we keep only the variables that we need for our analysis:
-
-- firstdragon
-
-- result
-
-- kills and deaths
-
-- firstmidtower
-
-- golddiffat25 and csdiffat25
-
-We check missing values for the mid-game features. Both golddiffat25 and csdiffat25 have about 1% missing values. These values are missing because some games end before the 25-minute mark, so the stats do not exist. This pattern is NMAR. To avoid bias, we remove these rows only when we study mid-game features. All other features stay in the dataset.
-
 
 ### Univariate Analysis
 
-# 两个
+<iframe
+  src="assets/kills_distribution.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/golddiffat25_distribution.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 First, we examined the distribution of key team performance metrics. This helps us better understand the overall game flow before analyzing the relationship between early objectives and match outcomes.
 
@@ -101,7 +91,33 @@ Overall, these distributions reveal that mid-game economic gaps do exist in prof
 
 ### Bivariate Analysis
 
-#三个
+<iframe
+  src="assets/team_kill_vs_first_dragon.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/gold_diff_vs_first_dragon.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/cs_diff_vs_first_dragon.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/win_by_first_dragon.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 First, we plan to use box plots to examine the performance differences in kill count, 25-minute gold difference, and 25-minute last-hit difference between teams that secure the first dragon. This will be our initial step.
 
@@ -120,6 +136,13 @@ This missing data directly depends on the duration of unrecorded matches. When a
 Therefore, the missingness mechanism for golddiffat25 and csdiffat25 is more appropriately classified as NMAR (Not Missing At Random).
 
 ### Missingness Dependency
+
+<iframe
+  src="assets/permutation_test1.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 To correctly determine whether the missing values in golddiffat25 are related to other missing-at-random (MAR) variables, we conducted a permutation test. We compared the mean difference in team kills between the missing and non-missing value groups and also examined whether the missing values were related to league (LCK vs LPL).
 
@@ -143,7 +166,12 @@ We use the difference in mean win rates:
 
 mean(win | firstdragon=1) - mean(win | firstdragon=0)
 
-# 一个
+<iframe
+  src="assets/permutation_test2.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 Permutation Test
 
@@ -238,6 +266,13 @@ We evaluated the final model on the test set using these parameters, achieving a
 This performance matches the baseline model's accuracy. While there is no numerical improvement, the Final Model incorporates richer economic features, aligning more closely with the actual game's data generation process. This makes the model conceptually more sound and enhances the interpretability of the results.
 
 ## Fairness Analysis
+
+<iframe
+  src="assets/permutation_test3.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ## Evaluation Metric
 
